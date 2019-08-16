@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -eu
+
+if [[ -z ${1:-} ]]; then
+    echo "update-initramfs did not pass a version number" >&2
+    exit 1
+else
+    version="$1"
+fi
+
+if [[ -z ${2:-} ]]; then
+    echo "update-initramfs did not pass an initramfs path" >&2
+    exit 1
+else
+    initramfs="$2"
+fi
+
+if ! command -v kernel-install >/dev/null 2>&1; then
+    exit 0
+fi
+
+kernel-install add "$version" "/boot/vmlinuz-$version"
+
+# vim: ts=8 sts=4 sw=4 et

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -eu
+
+if [[ -z ${1:-} ]]; then
+    echo "E: initramfs-tools: ${DPKG_MAINTSCRIPT_PACKAGE:-kernel package} did not pass a version number" >&2
+    exit 2
+else
+    version="$1"
+fi
+
+if [[ -z ${2:-} ]]; then
+    echo "E: initramfs-tools: ${DPKG_MAINTSCRIPT_PACKAGE:-kernel-package} did not pass a kernel path" >&2
+    exit 2
+else
+    kernel="$2"
+fi
+
+if ! command -v kernel-install >/dev/null 2>&1; then
+    exit 0
+fi
+
+kernel-install remove "$version" "$kernel"
+
+# vim: ts=8 sts=4 sw=4 et
